@@ -1,9 +1,6 @@
 # Mira
 making a productivity app because why not
 
----
-
----
 ## Big Brain part : 
 
 ### Frontend & Styling
