@@ -9,7 +9,7 @@ export const Footer = () => {
             {/* footer links */}
             <div className="flex ml-auto pr-4">
                 <ul className="flex items-center  justify-center gap-8">
-                    {FooterLinks.map((item, key) => (<li className=""><FooterLink href={item.href} name={item.name} /></li>))}
+                    {FooterLinks.map((item, key) => (<li className="" key={key}><FooterLink href={item.href} name={item.name} /></li>))}
                 </ul>
             </div>
         </footer>
