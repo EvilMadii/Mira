@@ -142,4 +142,6 @@ public class AuthService : IAuthService
         return new string(Enumerable.Repeat(chars, 16)
             .Select(s => s[random.Next(s.Length)]).ToArray());
     }
+
+
 }

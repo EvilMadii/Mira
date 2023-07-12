@@ -1,3 +1,4 @@
+using Amazon.S3;
 using api.services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -24,6 +25,9 @@ builder.Services.AddAuthentication(auth =>
     ValidateIssuerSigningKey = true,
     ClockSkew = TimeSpan.FromSeconds(30),
 });
+builder.Services.AddSingleton<IAmazonS3, AmazonS3Client>();
+builder.Services.AddSingleton<IUploadService, UploadService>();
+builder.Services.AddSingleton<IUserImageService, UserImageService>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
 var app = builder.Build();
 
