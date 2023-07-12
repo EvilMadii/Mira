@@ -6,19 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 public class UploadController : ControllerBase
 {
     private readonly IUploadService _uploadService;
-    private readonly IAuthService _authService;
-
-    public UploadController(IUploadService uploadService, IAuthService authService)
+    private readonly IUserImageService _userService;
+    public UploadController(IUploadService uploadService, IUserImageService userService)
     {
         _uploadService = uploadService;
-        _authService = authService;
+        _userService = userService;
     }
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> Upload([FromHeader] string _token, [FromForm] IFormFile file)
+    public async Task<IActionResult> Upload(Guid _uuid, [FromForm] IFormFile _file)
     {
-        string _guid = _authService.GetGuidFromJWT(_token);
-        var response = await _uploadService.UploadAsync(Guid.Parse(_guid), file);
-        throw new NotImplementedException();
+        var response = await _uploadService.UploadAsync(_uuid, _file);
+
     }
 }
