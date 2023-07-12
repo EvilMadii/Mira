@@ -7,7 +7,7 @@ type ProfileNavProps = {
 export const ProfileNav = (props: ProfileNavProps) => {
     return (
         <div className="rounded-full h-14 bg-Secondary aspect-square border-2 border-PrimaryAccent">
-
+            
         </div>
     )
 }
