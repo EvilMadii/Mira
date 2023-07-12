@@ -131,7 +131,8 @@ public class AuthService : IAuthService
     }
     public string HashPassword(string _salt, string _password)
     {
-        HMACSHA256 _hashingAlg = new HMACSHA256(Encoding.UTF8.GetBytes(_config["HashingKey"]));
+        byte[] _hashingKey = new JWTHelper().Key;
+        HMACSHA256 _hashingAlg = new HMACSHA256(_hashingKey);
         byte[] _computedHash = _hashingAlg.ComputeHash(Encoding.UTF8.GetBytes($"{_password}{_salt}"));
         return Encoding.UTF8.GetString(_computedHash);
     }
