@@ -17,7 +17,6 @@ public class AuthService : IAuthService
     * Jerk off to this service while you look for errors for me :3 x
     */
     private readonly RailwayContext _context;
-    private readonly IConfigurationRoot _config;
     // Constructors
 
     public AuthService()
@@ -27,7 +26,6 @@ public class AuthService : IAuthService
     public AuthService(RailwayContext context)
     {
         _context = context;
-        _config = new ConfigurationBuilder().AddUserSecrets<AuthService>().Build();
     }
 
     public async Task<string> Login(LoginRequest _request)
@@ -131,7 +129,7 @@ public class AuthService : IAuthService
     }
     public string HashPassword(string _salt, string _password)
     {
-        HMACSHA256 _hashingAlg = new HMACSHA256(Encoding.UTF8.GetBytes(_config["HashingKey"]));
+        HMACSHA256 _hashingAlg = new HMACSHA256(new JWTHelper().Key);
         byte[] _computedHash = _hashingAlg.ComputeHash(Encoding.UTF8.GetBytes($"{_password}{_salt}"));
         return Encoding.UTF8.GetString(_computedHash);
     }

@@ -4,6 +4,8 @@ using api.dal;
 using api.services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+namespace api.controllers;
+
 
 [ApiController]
 [Route("api/v1/[controller]")]
