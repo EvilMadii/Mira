@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using api.services;
 using Microsoft.AspNetCore.Authorization;
+using Amazon.S3;
 
 namespace api.controllers;
 
@@ -25,6 +26,24 @@ public class UploadFileController : ControllerBase
             return Ok(_id);
         }
         return BadRequest(_id);
+    }
+    [Authorize]
+    [HttpDelete]
+    [Route("{_id:guid}")]
+    public async Task<IActionResult> DeleteImageByGuid([FromRoute] Guid _id)
+    {
+        try
+        {
+            var response = await _service.DeleteImageAsync(_id);
+            if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
+                return Ok();
+            else
+                return BadRequest();
+        }
+        catch (AmazonS3Exception ex) when (ex.Message is "The specified key does not exist.")
+        {
+            return NotFound();
+        }
     }
 
 }

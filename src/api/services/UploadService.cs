@@ -3,7 +3,7 @@ using api.models.dbEntities;
 using Amazon.S3;
 using Amazon.S3.Model;
 using api.services;
-
+using Microsoft.EntityFrameworkCore;
 class UploadService : IUploadService
 {
     private readonly IAmazonS3 _s3;
@@ -15,23 +15,27 @@ class UploadService : IUploadService
         _context = new RailwayContext();
         _configuration = configuration;
     }
-    public Task<DeleteObjectResponse> DeleteImageAsync(Guid id)
+    public async Task<DeleteObjectResponse> DeleteImageAsync(Guid id)
     {
-        throw new NotImplementedException();
-    }
+        string BucketName = _getBucketName()!;
+        var deleteObjectRequest = new DeleteObjectRequest
+        {
+            BucketName = BucketName,
+            Key = $"profile_images/{id}"
+        };
+        await ChangeImageUrlAsync(id);
 
-    public Task<GetObjectResponse> GetImageAsync(Guid id)
-    {
-        throw new NotImplementedException();
+        return await _s3.DeleteObjectAsync(deleteObjectRequest);
     }
 
     public async Task<PutObjectResponse> UploadImageAsync(Guid id, IFormFile image)
     {
-        string BucketName = _configuration.GetSection("bucket-name").Value!;
+        string BucketName = _getBucketName()!;
+        string _key = $"profile_images/{id}";
         var putObjectRequest = new PutObjectRequest
         {
             BucketName = BucketName,
-            Key = $"profile_images/{id}",
+            Key = _key,
             ContentType = image.ContentType,
             InputStream = image.OpenReadStream(),
             Metadata = {
@@ -39,6 +43,30 @@ class UploadService : IUploadService
                 ["x-amz-meta-extension"] = Path.GetExtension(image.FileName)
             }
         };
+        await ChangeImageUrlAsync(id, _key);
         return await _s3.PutObjectAsync(putObjectRequest);
+
+    }
+    private string _getBucketName()
+    {
+        return _configuration.GetSection("bucket-name").Value!;
+    }
+
+    public async Task<bool> ChangeImageUrlAsync(Guid id, string key = "default/images.png")
+    {
+        try
+        {
+            var _usr = await _context.Users.FirstOrDefaultAsync(x => x.UserId == id);
+            if (_usr is null)
+                return false;
+            _usr.UserProfileImageUrl = $"https://d32w0gx4lhskfg.cloudfront.net/{key}";
+            _context.Entry(_usr).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
+        {
+            return false;
+        }
     }
 }

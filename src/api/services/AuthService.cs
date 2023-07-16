@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using api.dal;
 using api.models.dbEntities;
-using api.models.dto;
+using api.contracts.requests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -13,6 +13,7 @@ namespace api.services;
 
 public class AuthService : IAuthService
 {
+#pragma warning disable IDE0090
     /* 
     * Jerk off to this service while you look for errors for me :3 x
     */
@@ -30,7 +31,7 @@ public class AuthService : IAuthService
 
     public async Task<string> Login(LoginRequest _request)
     {
-        User _user = await _context.Users.SingleOrDefaultAsync(usr => usr.UserName == _request.Username);
+        User? _user = await _context.Users.SingleOrDefaultAsync(usr => usr.UserName == _request.Username);
         if (_user is null)
             return "";
         string _hashedPasswordAttempt = HashPassword(_user.Salt, _request.Password);
@@ -61,7 +62,7 @@ public class AuthService : IAuthService
             UserName = _request.UserName,
             Email = _request.Email.ToLower(),
             Password = _password,
-            UserProfileImageUrl = "",
+            UserProfileImageUrl = "https://d32w0gx4lhskfg.cloudfront.net/default/images.png",
             Salt = _salt,
             Datecreated = DateTime.Now,
             LastLogin = DateTime.Now,

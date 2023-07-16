@@ -9,8 +9,8 @@ public class JWTHelper
     public JWTHelper()
     {
         IConfigurationRoot _config = new ConfigurationBuilder().AddUserSecrets<JWTHelper>().Build();
-        Issuer = _config["JWT:Issuer"];
-        Audience = _config["JWT:Audience"];
-        Key = Encoding.UTF8.GetBytes(_config["JWT:Key"]);
+        Issuer = _config["JWT:Issuer"]!;
+        Audience = _config["JWT:Audience"]!;
+        Key = Encoding.UTF8.GetBytes(_config["JWT:Key"]!);
     }
 }
