@@ -5,7 +5,7 @@ namespace api.mapper;
 
 class MapperInit
 {
-    public IMapper _generateConfig()
+    public IMapper GenerateMapper()
     {
         var _mapperConfig = new MapperConfiguration(mc =>
         {

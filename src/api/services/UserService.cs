@@ -1,5 +1,6 @@
 using api.contracts.data;
 using api.repositories;
+using AutoMapper;
 
 namespace api.services;
 
@@ -13,24 +14,37 @@ class UserService : IUserService
         you can be quiet now I am using it to hold my mapping logic and stuff (I think)
     */
     private readonly IUserRepository _repository;
-    public UserService(IUserRepository repository)
+    private readonly IMapper _mapper;
+    public UserService(IUserRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
     public async Task<bool> DeleteAsync(Guid id)
     {
-        throw new NotImplementedException();
+        bool result = await _repository.DeleteAsync(id);
+        switch (result)
+        {
+            case true:
+                return true;
+            default:
+                return false;
+        }
     }
 
     public async Task<UserDTO?> GetByEmailAsync(string email)
     {
-        throw new NotImplementedException();
+        var user = await _repository.GetByEmailAsync(email);
+        var _userDto = _mapper.Map<UserDTO>(user);
+        return _userDto;
     }
 
     public async Task<UserDTO?> GetByGuidAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var user = await _repository.GetAsync(id);
+        var _userDto = _mapper.Map<UserDTO>(user);
+        return _userDto;
     }
 
     public async Task<bool> UpdateAsync(UserDTO userDTO)
