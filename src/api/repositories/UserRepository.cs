@@ -33,8 +33,16 @@ class UserRepository : IUserRepository
     {
         return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
     }
-    public Task<bool> UpdateAsync(UserDTO userDTO)
+    public async Task<bool> UpdateAsync(UserDTO userDTO)
     {
-        throw new NotImplementedException();
+        var _user = await _context.Users.SingleOrDefaultAsync(u => u.UserId == userDTO.UserId);
+        if (_user is null)
+            return false;
+        _user.UserName = userDTO.UserName;
+        _user.Email = userDTO.Email;
+        _user.Isactive = userDTO.Isactive;
+        _context.Entry(_user).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+        return true;
     }
 }

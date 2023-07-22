@@ -31,11 +31,10 @@ builder.Services.AddSingleton<IAmazonS3, AmazonS3Client>();
 var mapper = new MapperInit();
 builder.Services.AddSingleton(mapper.GenerateMapper());
 builder.Services.AddSingleton<IAuthService, AuthService>();
-
 builder.Services.AddSingleton<IUploadService, UploadService>();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<IUserService, UserService>();
-// add in UserService here so we down expose the repository...
+// Build project repository and put declarations below this madi you dummy.
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

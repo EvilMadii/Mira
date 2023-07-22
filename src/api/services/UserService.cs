@@ -24,13 +24,11 @@ class UserService : IUserService
     public async Task<bool> DeleteAsync(Guid id)
     {
         bool result = await _repository.DeleteAsync(id);
-        switch (result)
+        return result switch
         {
-            case true:
-                return true;
-            default:
-                return false;
-        }
+            true => true,
+            _ => false,
+        };
     }
 
     public async Task<UserDTO?> GetByEmailAsync(string email)
@@ -49,6 +47,6 @@ class UserService : IUserService
 
     public async Task<bool> UpdateAsync(UserDTO userDTO)
     {
-        throw new NotImplementedException();
+        return await _repository.UpdateAsync(userDTO);
     }
 }
