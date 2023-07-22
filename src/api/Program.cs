@@ -1,4 +1,5 @@
 using Amazon.S3;
+using api.mapper;
 using api.repositories;
 using api.services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -27,10 +28,13 @@ builder.Services.AddAuthentication(auth =>
     ClockSkew = TimeSpan.FromSeconds(30),
 });
 builder.Services.AddSingleton<IAmazonS3, AmazonS3Client>();
+var mapper = new MapperInit();
+builder.Services.AddSingleton(mapper.GenerateMapper());
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<IUploadService, UploadService>();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
-// add in UserService here so we down expose the repository...
+builder.Services.AddSingleton<IUserService, UserService>();
+// Build project repository and put declarations below this madi you dummy.
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,5 +1,5 @@
 using api.models.dbEntities;
-using api.models.dto;
+using api.contracts.requests;
 using api.dal;
 using api.services;
 using Microsoft.AspNetCore.Mvc;

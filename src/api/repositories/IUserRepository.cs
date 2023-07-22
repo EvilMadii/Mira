@@ -1,12 +1,12 @@
 using api.contracts.data;
-
+using api.models.dbEntities;
 namespace api.repositories;
 
 interface IUserRepository
 {
-    Task<UserDTO?> GetAsync(Guid id);
-    Task<UserDTO?> GetByEmailAsync(string email);
+    Task<User?> GetAsync(Guid id);
+    Task<User?> GetByEmailAsync(string email);
     Task<bool> UpdateAsync(UserDTO userDTO);
     Task<bool> DeleteAsync(Guid id);
-    
+
 }
