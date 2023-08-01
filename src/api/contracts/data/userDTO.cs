@@ -1,5 +1,5 @@
 namespace api.contracts.data;
-class UserDTO
+public class UserDTO
 {
     public Guid UserId { get; set; }
     public string UserName { get; set; } = null!;

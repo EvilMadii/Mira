@@ -2,7 +2,7 @@ using api.contracts.data;
 
 namespace api.services;
 
-interface IUserService
+public interface IUserService
 {
 
     Task<UserDTO?> GetByGuidAsync(Guid id);

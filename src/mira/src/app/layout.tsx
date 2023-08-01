@@ -1,7 +1,8 @@
-import { Navbar } from '@/components/navbar/Navbar'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { Footer } from '@/components/footer/Footer'
+import { Navbar } from '@/components/navbar/Navbar'
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -14,13 +15,16 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const _client = new QueryClient()
   return (
 
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
-        {children}
-        <Footer />
+        <QueryClientProvider client={_client}>
+          <Navbar />
+          {children}
+          <Footer />
+        </QueryClientProvider>
       </body>
     </html>
   )

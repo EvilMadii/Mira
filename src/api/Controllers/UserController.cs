@@ -1,13 +1,11 @@
-using api.contracts.data;
-using api.models.dbEntities;
 using api.services;
 using Microsoft.AspNetCore.Mvc;
-
-
+using api.contracts.data;
+namespace api.controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-class UserController : ControllerBase
+public class UserController : ControllerBase
 {
     private readonly IUserService _service;
     public UserController(IUserService service)
@@ -15,7 +13,7 @@ class UserController : ControllerBase
         _service = service;
     }
     [HttpGet]
-    [Route("{emailOrGuid:string}")]
+    [Route("{emailOrGuid}")]
     public async Task<ActionResult<UserDTO>> GetByEmailOrGuid([FromRoute] string emailOrGuid)
     {
         var isGuid = Guid.TryParse(emailOrGuid, out var id);
