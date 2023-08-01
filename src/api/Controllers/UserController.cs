@@ -1,6 +1,8 @@
 using api.services;
 using Microsoft.AspNetCore.Mvc;
 using api.contracts.data;
+using Microsoft.AspNetCore.Authorization;
+
 namespace api.controllers;
 
 [ApiController]
@@ -12,6 +14,7 @@ public class UserController : ControllerBase
     {
         _service = service;
     }
+    [Authorize]
     [HttpGet]
     [Route("{emailOrGuid}")]
     public async Task<ActionResult<UserDTO>> GetByEmailOrGuid([FromRoute] string emailOrGuid)
@@ -25,6 +28,7 @@ public class UserController : ControllerBase
 
         return Ok(user);
     }
+    [Authorize]
     [HttpDelete]
     [Route("delete/{id:guid}")]
     public async Task<ActionResult> DeleteById([FromRoute] Guid id)
@@ -36,6 +40,7 @@ public class UserController : ControllerBase
             _ => BadRequest(),
         };
     }
+    [Authorize]
     [HttpPut]
     [Route("update")]
     public async Task<ActionResult> Update([FromBody] UserDTO userDTO)
