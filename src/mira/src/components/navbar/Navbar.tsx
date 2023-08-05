@@ -1,8 +1,14 @@
+"use client";
+
 import { Navlinks } from "@/utils/cms"
 import { NavLink } from "./Navlink"
 import { ProfileNav } from "./ProfileNav"
 import Link from "next/link"
+import { UseAuthStore, AuthStoreTypes } from "@/stores/auth";
+import { SignInButton } from "./SignInBtn";
 export const Navbar = () => {
+    const jwt = UseAuthStore((state: any) => state.JWT);
+
 
     return (
         <nav className="flex w-auto pb-[0.05px] border-b-SecondaryAccent border-b-2 bg-Primary text-white">
@@ -17,12 +23,18 @@ export const Navbar = () => {
                 </ul>
             </div>
             <div className="flex px-4 items-center justify-end">
-                <Link href="/profile">
-                    <ProfileNav imageUrl={""} />
-                </Link>
+                {!jwt ? (
+                    <Link href="/login">
+                        <SignInButton />
+                    </Link>
+                )
+                    : (<Link href="/profile">
+                        <ProfileNav imageUrl={""} />
+                    </Link>)}
+
             </div>
 
-        </nav>
+        </nav >
     )
 }
 
